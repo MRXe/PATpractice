@@ -1,0 +1,45 @@
+#include<iostream>
+#include<stack>
+using namespace std;
+
+int main() {
+	int a, b;
+	int count = 0;
+	cin >> a >> b;
+	a += b;
+	stack<int> q;
+	if (a == 0) cout << a;
+	else if (a < 0) {
+		cout << "-";
+		a *= -1;
+	}
+	while (a != 0) {
+		b = a % 10;
+		a /= 10;
+		count++;
+		if (count == 3) {
+			count = 0;
+			q.push(b);
+			if(a !=0)q.push(-1);
+			
+		}
+		else {
+			q.push(b);
+		}
+	}
+	while (!q.empty()) {
+		if (q.top() != -1) {
+			cout << q.top();
+		}
+		else
+		{
+			cout << ",";
+			q.pop();
+			cout << q.top();
+			
+		}
+		q.pop();
+	}
+	system("pause");
+	return 0;
+}
