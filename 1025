@@ -1,0 +1,78 @@
+#include<iostream>
+#include <iomanip>
+#include<cstdio>
+#include<algorithm>
+using namespace std;
+struct student
+{
+	char id[15];
+	int score;
+	int final_rank;
+	int location_num;
+	int local_rank;
+}stu[30100];
+bool cmp(student a, student b) {
+	if (a.score != b.score) return a.score > b.score; //(high to low sort)
+	else return strcmp(a.id,b.id) < 0; // id low to high sort
+}
+
+int main() {
+	//input
+	int N, K,total=0;
+	cin >> N;
+	for (int i = 1; i <= N; i++) {
+		cin >> K;
+		for (int j = 0; j < K; j++) {
+			
+			cin >> stu[total].id >> stu[total].score;
+			stu[total].location_num = i;
+			total++;
+		}
+		sort(stu + total - K, stu + total, cmp);
+		stu[total - K ].local_rank = 1;
+		for (int j = total - K + 1; j < total; j++) {
+			if (stu[j].score == stu[j - 1].score) {
+				//rank 一样
+				stu[j].local_rank = stu[j - 1].local_rank;
+			}
+			else
+				stu[j].local_rank =j +1 - (total-K);
+		}
+		
+
+	}
+	cout << total<<endl;
+	sort(stu , stu + total , cmp);
+	stu[0].final_rank = 1;
+	for (int i = 1; i < total ; i++) {
+		if (stu[i].score == stu[i - 1].score) {
+			stu[i].final_rank = stu[i - 1].final_rank;
+		}
+		else {
+			stu[i].final_rank = i + 1;
+		}
+	}
+	for (int i = 0; i < total; i++) {
+		cout << stu[i].id << " ";
+		cout << stu[i].final_rank << " ";
+		cout << stu[i].location_num << " ";
+		cout << stu[i].local_rank;
+		cout << endl;
+	}
+	system("pause");
+	return 0;
+}
+/*
+2
+5
+1234567890001 95
+1234567890005 100
+1234567890003 95
+1234567890002 77
+1234567890004 85
+4
+1234567890013 65
+1234567890011 25
+1234567890014 100
+1234567890012 85
+*/
