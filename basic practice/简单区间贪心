@@ -23,7 +23,7 @@ int main() {
 		sort(I, I + n, cmp);
 		int ans = 1 , lastX = I[0].x;  //lasxX记录上个选中区间的左端点
 		for (int i = 1; i < n; i++) {
-			if (I[i].x < lastX) {
+			if (I[i].y <= lastX) {
 				lastX = I[i].x;
 				ans++;
 			}
