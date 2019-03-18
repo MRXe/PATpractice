@@ -1,0 +1,44 @@
+#include<iostream>
+#include <iomanip>
+#include<cstdio>
+#include<algorithm>
+using namespace std;
+const int maxn = 100;
+
+void merge(int A[], int L1, int R1, int L2, int R2) {
+	int i = L1, j = L2;
+	int temp[maxn], index = 0; // 临时合并存放数组 ,index为下标
+	while (i<=R1&&j<=R2)
+	{
+		if (A[i] <= A[j]) {
+			temp[index++] = A[i++];
+		}
+		else {
+			temp[index++] = A[j++];
+		}
+	}
+	//剩余放入temp
+	while (i <= R1) temp[index++] = A[i++];
+	while (j <= R2)temp[index++] = A[j++];
+	for (int i = 0; i < index; i++) {
+		A[L1 + i] = temp[i];
+	}
+}
+void mergesort(int A[],int left,int right) {
+	if (left < right) {
+		int mid = (left + right) / 2;
+		mergesort(A, left, mid);
+		mergesort(A, mid + 1, right);
+		merge(A, left, mid, mid + 1, right);
+	}
+}
+int main() {
+	//略
+	int A[10] = { 1,2,3,5,6,8,-2,-8,-6,-5 };
+	mergesort(A, 0, 9);
+	for (int i = 0; i < 10; i++) {
+		cout << A[i] << " ";
+	}
+	system("pause");
+	return 0;
+}
