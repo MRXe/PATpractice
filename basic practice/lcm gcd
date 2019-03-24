@@ -1,0 +1,18 @@
+#include<iostream>
+#include <iomanip>
+#include<cstdio>
+#include<algorithm>
+using namespace std;
+
+int gcd(int a, int b) {
+	if (b == 0)return a;
+	else
+		return gcd(b, a%b);
+}
+//lcm 最大公倍 ab/gcd    防溢出 lcm = a/gcd*b;
+int main() {
+	//略
+	cout << 15*20/gcd(15, 20);
+	system("pause");
+	return 0;
+}
