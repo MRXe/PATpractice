@@ -3,7 +3,28 @@
 #include<cstdio>
 #include<algorithm>
 using namespace std;
+int gcd(int, int);
+struct Fraction {
+	int up, down; //分子分母
+};
+//分数化简
 
+Fraction reduction(Fraction result) {
+	if (result.down < 0) {
+		result.up = -result.up;
+		result.down = -result.down;
+	}
+	if (result.up == 0) {  //分子为0 
+		result.down = 1;	//令分母为1
+	}
+	else {
+		int d = gcd(abs(result.up),abs(result.down)); //分子分母最大公约数
+		result.up /= d;
+		result.down /= d;
+	}
+	return result;
+}
+//分数四则 略;
 int gcd(int a, int b) {
 	if (b == 0)return a;
 	else
