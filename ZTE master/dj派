@@ -1,0 +1,169 @@
+#include <iostream>
+#include<cstdio>
+#include<cstring>
+#include<vector>
+#include <stdlib.h>
+using namespace std;
+//存放原始拓扑信息
+vector<int> gridTopo[956];
+//存放所有业务需求信息
+vector<int> request[4001];
+void clearVec()
+{
+    for(int i=0;i<956;i++) gridTopo[i].clear();
+    for(int i=0;i<4001;i++) request[i].clear();
+}
+void readTxt()
+{
+    char readLine[1000];
+    const char *delim=" ";
+    char *p;
+    for(int i=0;i<956;i++)
+    {
+        cin.getline(readLine,1000);
+        p=strtok(readLine,delim);
+        while(p)
+        {
+            gridTopo[i].push_back(atoi(p));
+            p = strtok(NULL, delim);
+        }
+    }
+    for(int i=0;i<4001;i++)
+    {
+        cin.getline(readLine,1000);
+        p=strtok(readLine,delim);
+        while(p)
+        {
+            request[i].push_back(atoi(p));
+            p = strtok(NULL, delim);
+        }
+    }
+}
+
+struct edge {
+	int w; //单位质量开销
+	int flow; //剩余流量
+};
+const int n = 500; // 顶点数
+edge G[n][n]; //拓扑图
+int jobNum[1000];//业务号数组，将质量大的排前面
+int d[n];//起点到达各点的最短路劲长度
+bool vis[n] = { false }; // 标记访问数组
+const int INF = 1000000000;
+int pre[n]; //记录前驱，用于返回路径
+int start, aim;
+vector<int>output[1001];
+void Dijstra(int s, int jobindex) { //起点为s  
+	fill(d, d + n, INF);
+	for (int i = 0; i < n; i++) {
+		vis[i] = false;
+		pre[i] = i;
+	}
+	d[s] = 0;
+	for (int i = 0; i < n; i++) {
+		int u = -1, MIN = INF; //u使得d[u]最小,MIN存放最小的d[u]
+		for (int j = 0; j < n; j++) {
+			if (vis[j] == false && d[j] < MIN) {
+				u = j;
+				MIN = d[j];
+			}
+		}
+		//找不到比INF小的d[u]则其他顶点与s不连通
+		if (u == -1)return;
+		vis[u] = true;
+		for (int v = 0; v < n; v++) {
+			if (vis[v] == false && G[u][v].w != INF
+				&& (d[u] + G[u][v].w < d[v])
+				&& (G[u][v].flow - request[jobindex][1] > 0)
+				) {
+				d[v] = d[u] + G[u][v].w;//优化d[v]
+				pre[v] = u;
+			}
+		}
+
+	}
+}
+//思路 n次dj    贪心选择业务质量最大的先排业务 
+int main()
+{
+
+	clearVec();
+	//1.输入
+	readTxt();
+	//2.write your code
+
+	/*#######################################################*/
+	//拓扑图构造
+	for (int i = 1; i < 956; i++) {
+		int u = gridTopo[i][0];
+		int v = gridTopo[i][1];
+		G[u][v].flow = gridTopo[i][2] * 0.75;
+		G[v][u].flow = gridTopo[i][2] * 0.75;
+		G[u][v].w = gridTopo[i][3];
+		G[v][u].w = gridTopo[i][3];
+	
+
+	}
+	//对业务按质量排序
+	for (int i = 1; i < 4001; i += 4) {
+		for (int j = i; j < 4000; j += 4) {
+			if (request[i][1] < request[j][1]) {
+				swap(request[i], request[j]);
+				swap(request[i + 1], request[j + 1]);
+				swap(request[i + 2], request[j + 2]);
+				swap(request[i + 3], request[j + 3]);
+			}
+		}
+	}
+	
+	bool exit = true;
+	long totalcost = 0;
+	for (int i = 1; i < 4001; i += 4) {
+		int begin, aim;
+		begin = request[i + 1][0];
+		aim = request[i + 1][request[i + 1].size() - 1];
+		Dijstra(begin, i);
+		if (vis[aim] == false) {
+
+			//使用备用路径
+			exit = false;//备用路径也不行
+			break;
+		}
+		//存在路径
+		output[request[i][0] + 1].push_back(request[i][0]);
+		output[request[i][0] + 1].push_back(request[i][1]);
+
+		int t = aim;
+		//保存路径
+		output[request[i][0] + 1].push_back(t); //尾
+		while (t != begin) {
+			t = pre[t];
+			if (G[t][aim].flow - request[i][1] > 0) {
+				G[t][aim].flow -= request[i][1];
+				totalcost += request[i][1] * G[t][aim].w;
+				output[request[i][0] + 1].push_back(t);
+				aim = t;
+			}
+
+		}
+		//打印结果
+
+	}
+	if (exit == false) {
+		if (exit == false)cout << "NA" << endl;
+	}
+	else {
+		cout << totalcost << endl;
+		for (int i = 1; i < 1001; i++) {
+			cout << output[i][0] << " " << output[i][1] << endl;
+			cout << output[i][output[i].size() - 1] << " ";
+			for (int j = output[i].size() - 2; j >= 2; j--) {
+				cout << output[i][j];
+				if (j != output[i].size() - 1)
+					cout << " ";
+			}
+			cout << endl;
+		}
+	}
+	return 0;
+}
