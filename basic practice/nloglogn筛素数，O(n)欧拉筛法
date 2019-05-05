@@ -3,7 +3,7 @@ using namespace std;
 const int maxn = 101;
 bool p[maxn] = {0};
 int prime[maxn], pNum = 0; //存放素数，素数个数
-//筛去素数的所有倍数;
+
 void findPrime() {
 	for (int i = 2; i < maxn; i++) {
 		if (p[i] == false) {
@@ -15,9 +15,20 @@ void findPrime() {
 		}
 	}
 }
-
+void find_Prime_ora() {
+	for (int i = 2; i < maxn; i++) {
+		if (!p[i]) prime[pNum++] = i;
+		for (int j = 0; j < pNum&&i*prime[j]<=maxn; j++) {
+			cout << "p[" << i * prime[j] << "]=true; ";
+			p[i*prime[j]] = true;
+			if (i%prime[j] == 0)break;  //i = prime[j]*k   
+			//对于i*prime[j+1]=prime[j]*k*prime[j+1],也就是说当i=k*prime[j+1]时可通过prime[j]晒掉i*prime[j+1]//最小素因子筛除
+		}
+		cout << endl;
+	}
+}
 int main() {
-	findPrime();
+	find_Prime_ora();
 	for (int i = 0; i < pNum; i++) {
 		cout << prime[i] << " " << endl;
 	}
