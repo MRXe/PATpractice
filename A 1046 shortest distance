@@ -1,0 +1,28 @@
+#include<iostream>
+#include<string>
+#include<algorithm>
+using namespace std;
+
+//dis[i] means the distance between 1 to i, which is also means there is a circle if i=1.
+int main(){
+	const int max = 100005;
+	int dis[max] = { 0 };
+	int n, d,m,sum=0;
+	int left, right;
+	cin >> n;
+	for (int i = 1; i <= n; i++) {
+		cin >> d;
+		sum += d;
+
+		dis[i%n+1] = sum;
+	}
+	cin >> m;
+	for (int i = 0; i < m; i++) {
+		cin >> left >> right;
+		
+		int temp = abs( dis[right] - dis[left]);
+		temp = min(temp, sum - temp);
+		cout << temp << endl;
+	}
+	return 0;
+}
