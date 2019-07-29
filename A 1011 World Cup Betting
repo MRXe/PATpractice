@@ -1,0 +1,31 @@
+#include<iostream>
+#include<map>
+#include<iomanip>
+using namespace std;
+
+//三组比赛 给出  W 赢 T平 L输 的赔率， 计算最大期望获利  投入两块，三场赔率连算
+int main() {
+	char bet[3] = { 'W','T','L' };
+	int game[3] = { 0 };
+	double ans = 1;
+	int n;
+	double w;
+	int index;
+	for (int i = 0; i < 3; i++) {
+		double max = -1;
+		for (int j = 0; j < 3; j++) {
+			cin >> fixed >> setprecision(1) >> w;
+			if (w > max) {
+				index = j;
+				max = w;
+			}
+		}
+		ans = ans * max;
+		game[i] = index;
+	}
+	cout << bet[game[0]] << " " << bet[game[1]] << " "
+		<< bet[game[2]] << " " << fixed << setprecision(2) << (ans*0.65 - 1) * 2 << endl;
+	system("pause");
+	return 0;
+
+}
