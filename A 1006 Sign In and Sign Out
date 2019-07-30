@@ -1,0 +1,47 @@
+#include<iostream>
+#include<string>
+#include<cstdio>
+using namespace std;
+
+//记录最先进来和最后进来- -
+struct record
+{
+	char id[20];
+	int hh, mm, ss;
+}temp,earliest,latest;
+bool g(record a, record b) {
+	if (a.hh == b.hh) {
+		if (a.mm == b.mm) {
+			return a.ss > b.ss;
+		}
+		else {
+			return a.mm > b.mm;
+		}
+	}
+	else {
+		return a.hh > b.hh;
+	}
+}
+int main() {
+	int n;
+	string timein, timeleft,id;
+	earliest.hh = 24, earliest.mm = 60, earliest.ss = 60;
+	latest.mm = 0; latest.hh = 0, latest.ss = 0;
+	cin >> n;
+	while (n--)
+	{
+
+		scanf("%s %d:%d:%d", temp.id, &temp.hh, &temp.mm, &temp.ss);
+		if (!g(temp, earliest)) {
+			earliest = temp;
+		}
+		scanf("%d:%d:%d", &temp.hh, &temp.mm, &temp.ss);
+		if (g(temp, latest)) {
+			latest = temp;
+		}
+
+	}
+	printf("%s %s\n", earliest.id, latest.id);
+	system("pause");
+	return 0;
+}
