@@ -1,0 +1,47 @@
+#include<iostream>
+#include<string>
+#include<cstdio>
+using namespace std;
+struct record
+{
+	char name[11];
+	char id[11];
+	char sex;
+	int grade;
+	
+}temp,boy,gril;
+
+int main() {
+	int n;
+	string timein, timeleft,id;
+	boy.grade = 101, gril.grade = -1;
+	int be=0, ge=0;
+	cin >> n;
+	while (n--)
+	{
+
+		scanf("%s %c %s %d", temp.name,&temp.sex, temp.id, &temp.grade);
+		if (temp.sex == 'F') {
+			ge = 1;
+			if (temp.grade > gril.grade)gril = temp;
+		}
+		else {
+			be = 1;
+			if (temp.grade < boy.grade)boy = temp;
+		}
+	}
+	if (ge == 1)printf("%s %s\n", gril.name, gril.id);
+	else {
+		printf("Absent\n");
+	}
+	if (be == 1)printf("%s %s\n", boy.name, boy.id);
+	else {
+		printf("Absent\n");
+	}
+	if (be==0||ge==0)printf("NA\n");
+	else {
+		printf("%d\n", gril.grade - boy.grade);
+	}
+	system("pause");
+	return 0;
+}
