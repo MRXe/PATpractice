@@ -1,0 +1,37 @@
+#include<iostream>
+#include<string>
+using namespace std;
+
+//n1=n3<=n2  
+//转化为求解 2x+y-2=N x<=y 时 x最大值  画图就好 x是整数向下取整
+int main() {
+	string str;
+	cin >> str;
+	char ans[100][100];
+	for (int i = 0; i < 100; i++) {
+		for (int j = 0; j < 100; j++) {
+			ans[i][j] = ' ';
+		}
+	}
+	int len = str.size();
+	int x = (len + 2) / 3;
+	int n2 = len - 2 * x + 2;
+	int i = 0;
+	for (int i=0; i < x; i++) {
+		ans[i][0] = str[i];
+	}
+	for (int i = 1; i < n2; i++) {
+		ans[x - 1][i] = str[x - 1 + i];
+	}
+	for (int i = x-2; i >=0; i--) {
+		ans[i][n2 - 1] = str[x - 2 - i + x + n2 - 1];
+	}
+	for (int i = 0; i < x; i++) {
+		for (int j = 0; j < n2; j++) {
+			cout << ans[i][j];
+		}
+		cout << endl;
+	}
+	system("pause");
+	return 0;
+}
