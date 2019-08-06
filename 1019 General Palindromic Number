@@ -1,0 +1,44 @@
+//大意，给定十进制数N，和基b 转成任意b进制数，并判断是否为回文数
+
+#include<iostream>
+#include<string>
+#include<cstdio>
+#include<cmath>
+using namespace std;
+
+int main() {
+	int ans[32] = { 0 };
+	int n, b;
+	scanf("%d %d", &n, &b);
+	int count = 0;
+
+	while (1)
+	{
+		ans[count++] = n % b;
+		n = n / b;
+		if (n == 0)break;
+	}
+
+	//判断回文
+	bool isP = true;
+	int i = 0, j = count - 1;
+	while (i!=j)
+	{
+		if (ans[i++] == ans[j--])continue;
+		else {
+			isP = false;
+			break;
+		}
+	}
+	if (isP)printf("Yes\n");
+	else printf("No\n");
+
+	for (int k = count - 1; k >= 0; k--) {
+		printf("%d", ans[k]);
+		if (k != 0)printf(" ");
+	}
+	printf("\n");
+	system("pause");
+	return 0;
+}
+
