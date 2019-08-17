@@ -1,0 +1,23 @@
+#include<iostream>
+#include<string>
+#include<cstdio>
+#include<cmath>
+using namespace std;
+struct color
+{
+	int gal, sic, knu;
+}a,b,ans;
+int main() {
+	scanf("%d.%d.%d ", &a.gal, &a.sic, &a.knu);
+	scanf("%d.%d.%d", &b.gal, &b.sic, &b.knu);
+	ans.gal = a.gal + b.gal;
+	ans.sic = a.sic + b.sic;
+	ans.knu = a.knu + b.knu;
+	ans.sic += ans.knu / 29;
+	ans.knu = ans.knu % 29;
+	ans.gal += ans.sic / 17;
+	ans.sic = ans.sic % 17;
+	printf("%d.%d.%d\n", ans.gal, ans.sic, ans.knu);
+	system("pause");
+	return 0;
+}
