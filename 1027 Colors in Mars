@@ -1,0 +1,33 @@
+#include<iostream>
+#include<string>
+#include<cstdio>
+#include<cmath>
+using namespace std;
+struct color
+{
+	char d[2];
+}R[3];
+
+int main() {
+	const int radix = 13;
+	int c[3];
+	scanf("%d %d %d", &c[0], &c[1], &c[2]);
+
+	for (int i = 0; i < 3; i++)
+	{
+		for (int j = 0; j < 2; j++)
+		{
+			if (c[i] % radix < 10) {
+				R[i].d[j] = c[i] % radix + 48;
+			}
+			else {
+				R[i].d[j] = c[i] % radix - 10 + 65;
+			}
+			c[i] = c[i] / radix;
+			}
+	}
+	printf("#%c%c%c%c%c%c\n", R[0].d[1], R[0].d[0], R[1].d[1], R[1].d[0], R[2].d[1], R[2].d[0]);
+	system("pause");
+	return 0;
+}
+
